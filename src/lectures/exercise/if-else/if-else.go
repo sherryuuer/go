@@ -4,14 +4,6 @@
 //  allows any user to access the resource. Implement the functionality
 //  needed to grant resource access using any combination of `if`, `else if`,
 //  and `else`.
-//
-//--Requirements:
-//* Use the accessGranted() and accessDenied() functions to display
-//  informational messages
-//* Access at any time: Admin, Manager
-//* Access weekends: Contractor
-//* Access weekdays: Member
-//* Access Mondays, Wednesdays, and Fridays: Guest
 
 package main
 
@@ -27,6 +19,10 @@ const (
 	Saturday  = 5
 	Sunday    = 6
 )
+
+func weekday(day int) bool {
+	return day <= 4
+}
 
 // User roles
 const (
@@ -47,7 +43,23 @@ func accessDenied() {
 
 func main() {
 	// The day and role. Change these to check your work.
-	today, role := Tuesday, Guest
-
-	accessGranted()
+	today, role := Tuesday, Member
+	//--Requirements:
+	//* Use the accessGranted() and accessDenied() functions to display
+	//  informational messages
+	//* Access at any time: Admin, Manager
+	if role == Admin || role == Manager {
+		accessGranted()
+		//* Access weekends: Contractor
+	} else if role == Contractor && !weekday(today) {
+		accessGranted()
+		//* Access weekdays: Member
+	} else if role == Member && weekday(today) {
+		accessGranted()
+		//* Access Mondays, Wednesdays, and Fridays: Guest
+	} else if role == Guest && (today == Monday || today == Wednesday || today == Friday) {
+		accessGranted()
+	} else {
+		accessDenied()
+	}
 }
