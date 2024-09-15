@@ -17,8 +17,33 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
+
+// 这个结构基本就是class相当的东西了，struct
+type Rectangle struct {
+	length int
+	width  int
+}
+
+func areaPerimeter(rect Rectangle) (int, int) {
+	return rect.length * rect.width, (rect.length + rect.width) * 2
+}
+
+func printInfo(rect Rectangle) {
+	area, perimeter := areaPerimeter(rect)
+	fmt.Println("rectangle area is", area, " perimeter is", perimeter)
+}
 
 func main() {
+	rectangle := Rectangle{2, 3}
+
+	printInfo(rectangle)
+
+	rectangle.length = 4
+	rectangle.width = 6
+
+	printInfo(rectangle)
 
 }
