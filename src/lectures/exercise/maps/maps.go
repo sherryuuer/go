@@ -29,6 +29,43 @@ const (
 	Retired     = 3
 )
 
+func printStatus(servers map[string]int) {
+	fmt.Println("------")
+	fmt.Println("Total num of servers is", len(servers))
+	statusCount := make(map[int]int)
+	for _, status := range servers {
+		statusCount[status] += 1
+	}
+	// 这个写法比较酷，同时const的东西可以直接用，也很酷，这个应该是吸收了java的功能
+	fmt.Println(statusCount[Online], "servers are online")
+	fmt.Println(statusCount[Offline], "servers are offline")
+	fmt.Println(statusCount[Maintenance], "servers are undergoint maintenance")
+	fmt.Println(statusCount[Retired], "servers are retired")
+	fmt.Println("------")
+}
+
 func main() {
 	servers := []string{"darkstar", "aiur", "omicron", "w359", "baseline"}
+	// create a map for servers
+	serversMap := make(map[string]int)
+	for _, server := range servers {
+		// 定数可以直接使用
+		serversMap[server] = Online
+	}
+	fmt.Println(serversMap)
+	//  - call display server info function
+	printStatus(serversMap)
+	//  - change server status of `darkstar` to `Retired`
+	serversMap["darkstar"] = Retired
+	//  - change server status of `aiur` to `Offline`
+	serversMap["aiur"] = Offline
+	//  - call display server info function
+	printStatus(serversMap)
+	//  - change server status of all servers to `Maintenance`
+	for server, status := range serversMap {
+		fmt.Println("Change status of", server, "from", status, "to", Maintenance)
+		serversMap[server] = Maintenance
+	}
+	printStatus(serversMap)
+	//  - call display server info function
 }
