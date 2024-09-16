@@ -16,7 +16,32 @@ package main
 
 import "fmt"
 
+func printInfo(title string, assemblyLine []string) {
+	fmt.Println()
+	fmt.Println("---", title, "---")
+
+	for i := 0; i < len(assemblyLine); i++ {
+		part := assemblyLine[i]
+		fmt.Println(part)
+	}
+}
+
 type Part string
 
 func main() {
+	// assemblyLine := []string{"Extract", "Translate", "Load"}
+	// printInfo("Initial", assemblyLine)
+	// 或者使用下面的方式
+	assemblyLine := make([]string, 3)
+	assemblyLine[0] = "Extract"
+	assemblyLine[1] = "Translate"
+	assemblyLine[2] = "Load"
+	printInfo("Initial", assemblyLine)
+
+	assemblyLine = append(assemblyLine, "Query", "Create Mart")
+	printInfo("Added new", assemblyLine)
+
+	assemblyLine = assemblyLine[3:]
+	printInfo("Only new", assemblyLine)
+
 }
