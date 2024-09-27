@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/sherryuuer/go/src/lectures/demo/mypkg/display"
-	"github.com/sherryuuer/go/src/lectures/demo/mypkg/msg"
+	"github.com/sherryuuer/go/lectures/demo/mypkg/display"
+	"github.com/sherryuuer/go/lectures/demo/mypkg/msg"
 )
 
 func main() {

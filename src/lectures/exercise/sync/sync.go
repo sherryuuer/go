@@ -19,7 +19,63 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
+	"sync"
+	"unicode"
 )
 
-func main() {}
+type Count struct {
+	count int
+	sync.Mutex
+}
+
+func getWords(line string) []string {
+	return strings.Split(line, " ")
+}
+
+func countLetters(word string) int {
+	letters := 0
+	for _, ch := range word {
+		if unicode.IsLetter(ch) {
+			letters++
+		}
+	}
+	return letters
+}
+
+func main() {
+	// 扫描lines
+	scanner := bufio.NewScanner(os.Stdin)
+	// 初始化totalLetters
+	totalLetters := Count{}
+	// 初始化wg
+	var wg sync.WaitGroup
+	// 获取Words的列表
+	// 对列表进行loop获得每个单词的长, 将长度加在totalLetters上
+	for {
+		if scanner.Scan() {
+			line := scanner.Text()
+			words := getWords(line)
+			for _, word := range words {
+				wordCopy := word
+				wg.Add(1)
+				go func() {
+					totalLetters.Lock()
+					defer totalLetters.Unlock()
+					defer wg.Done()
+					sum := countLetters(wordCopy)
+					totalLetters.count += sum
+				}()
+			}
+		} else {
+			break
+		}
+
+		wg.Wait()
+		sum := totalLetters.count
+		fmt.Println("total letters: ", sum)
+	}
+}

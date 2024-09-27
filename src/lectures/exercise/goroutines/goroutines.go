@@ -34,6 +34,45 @@ import (
 	"time"
 )
 
+func sumFile(reader bufio.Reader) int {
+	sum := 0
+	for {
+		line, err := reader.ReadString('\n')
+		if err == io.EOF {
+			return sum
+		}
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+
+		num, err := strconv.Atoi(line[:len(line)-1])
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+
+		sum += num
+	}
+}
+
 func main() {
 	files := []string{"num1.txt", "num2.txt", "num3.txt", "num4.txt", "num5.txt"}
+
+	sum := 0
+
+	for i := 0; i < len(files); i++ {
+		file, err := os.Open(files[i])
+		if file != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
+		reader := bufio.NewReader(file)
+		calculate := func() {
+			fileSum := sumFile(*reader)
+			sum += fileSum
+		}
+
+		go calculate()
+	}
+	time.Sleep(300 * time.Millisecond)
 }
